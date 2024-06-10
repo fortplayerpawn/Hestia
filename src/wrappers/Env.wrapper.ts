@@ -9,6 +9,7 @@ const configSchema = z.object({
   matchmaker_port: z.number(),
   http_port: z.number(),
   databaseUrl: z.string(),
+  encryptionKey: z.string(),
 });
 
 export default class Config {
@@ -19,6 +20,7 @@ export default class Config {
       matchmaker_port: parseInt(Bun.env.matchmaker_port as string, 10),
       http_port: parseInt(Bun.env.http_port as string, 10),
       databaseUrl: Bun.env.databaseUrl,
+      encryptionKey: Bun.env.encryptionKey,
     });
 
     // Check if parsing was successful

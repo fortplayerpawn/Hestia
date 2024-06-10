@@ -8,12 +8,18 @@
   "peerDependencies": {
     "typescript": "^5.0.0"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fortplayerpawn/Hestia.git"
+  },
   "dependencies": {
     "@types/pg": "^8.11.6",
+    "@types/uuid": "^9.0.8",
     "chalk": "^5.3.0",
     "dotenv": "^16.4.5",
     "hono": "^4.4.4",
     "pg": "^8.12.0",
+    "uuid": "^10.0.0",
     "zod": "^3.23.8"
   }
 }

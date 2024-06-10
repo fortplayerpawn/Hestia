@@ -104,7 +104,7 @@ export default class Database {
         status VARCHAR(255) NOT NULL,
         maxplayers INT NOT NULL,
         players INT NOT NULL,
-        season INT NOT NULL,
+        bucketid VARCHAT(255) NOT NULL,
         customkey VARCHAR(255),
         ip VARCHAR(255) NOT NULL,
         port INT NOT NULL

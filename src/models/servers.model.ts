@@ -11,7 +11,7 @@ export interface Server {
   status: ServerStatus;
   maxPlayers: number;
   players: number;
-  season: number;
+  bucketId: string;
   customKey: string;
   ip: string;
   port: number;
