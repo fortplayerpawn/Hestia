@@ -5,7 +5,7 @@ export enum ServerStatus {
 }
 
 export interface Server {
-  serverId: string;
+  id: string;
   region: string;
   playlist: string;
   status: ServerStatus;
