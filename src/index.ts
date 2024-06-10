@@ -12,6 +12,8 @@ const db = new Database();
 db.connect();
 db.createTables();
 
+import("./mms/service");
+
 Bun.serve({
   fetch: app.fetch,
   port: config.http_port,
