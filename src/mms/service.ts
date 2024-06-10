@@ -1,7 +1,7 @@
 import { app, config, logger } from "..";
 import { clients } from "../storage/storage";
 import authenticate, { type Payload } from "./authentication";
-import uuid from "uuid";
+import { v4 as uuid } from "uuid";
 
 interface AuthPayload extends Payload {
   accountId: string;
@@ -49,9 +49,9 @@ Bun.serve<ServiceData>({
         status: 400,
       });
 
-    const ticketId = uuid.v4().replace(/-/gi, "");
-    const matchId = uuid.v4().toString().replace(/-/gi, "");
-    const sessionId = uuid.v4().toString().replace(/-/gi, "");
+    const ticketId = uuid().replace(/-/gi, "");
+    const matchId = uuid().replace(/-/gi, "");
+    const sessionId = uuid().replace(/-/gi, "");
 
     server.upgrade(request, {
       data: {
