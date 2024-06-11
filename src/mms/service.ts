@@ -1,9 +1,14 @@
 import { app, config, logger } from "..";
-import { clients } from "../storage/storage";
+import { clients, clientsSetup } from "../storage/storage";
 import authenticate, { type Payload } from "./authentication";
 import { v4 as uuid } from "uuid";
+import { findClientInQueue } from "./utilities/find";
+import { createNewQueue } from "./utilities/queue";
+import connectingState from "./states/connecting.state";
+import waitingState from "./states/waiting.state";
+import queuedState from "./states/queued.state";
 
-interface AuthPayload extends Payload {
+export interface AuthPayload extends Payload {
   accountId: string;
   timestamp: string;
   accessToken: string;
@@ -68,17 +73,34 @@ Bun.serve<ServiceData>({
   },
   websocket: {
     open(socket) {
-      clients.set(socket.data.payload.accountId, {
-        sessionId: socket.data.sessionId,
-        matchId: socket.data.matchId,
-        customKey: socket.data.payload.customKey,
-        accountId: socket.data.payload.accountId,
-        ticketId: socket.data.ticketId,
-        region: socket.data.payload.region,
-        playlist: socket.data.payload.playlist,
-        bucketId: socket.data.payload.buildId,
+      const { data } = socket;
+      const { payload } = data;
+
+      clientsSetup.addClient(payload.accountId, {
+        sessionId: data.sessionId,
+        matchId: data.matchId,
+        customKey: payload.customKey,
+        accountId: payload.accountId,
+        ticketId: data.ticketId,
+        region: payload.region,
+        playlist: payload.playlist,
+        bucketId: payload.buildId,
         socket,
       });
+
+      const clientsInQueue = findClientInQueue(
+        payload,
+        data.sessionId,
+        data.matchId
+      );
+
+      // leave this out for now
+      // if (!clientsInQueue || clientsInQueue.length === 100)
+      //   createNewQueue(socket);
+
+      connectingState(socket);
+      waitingState(socket);
+      queuedState(socket);
     },
     message(socket, message) {},
   },
